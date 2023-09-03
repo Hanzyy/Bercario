@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Bebe {
+  nome        String
+  CPF         Int @id @unique 
+  data_nasc   DateTime
+  peso_nasc   Float 
+  altura      Float 
+  mae         Mae @relation(fields : [maeCPF], references: [CPF])
+  maeCPF     Int 
+  medico      Medico @relation (fields: [medCRM], references: [CRM])
+  medCRM     Int
+}
+
+model Mae {
+  nomemae     String
+  CPF         Int @id @unique 
+  data_nasc   DateTime
+  endereco    String
+  telefone    String @unique
+  bebes       Bebe[]
+
+}
+
+model Medico {
+  nomemedico    String
+  CRM           Int @id @unique
+  data_nasc     DateTime
+  especialidade String
+  bebes         Bebe[]
+}
